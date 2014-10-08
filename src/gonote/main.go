@@ -1,7 +1,6 @@
 package main
 
 import (
-	"db"
 	"github.com/gorilla/pat"
 	"log"
 	"net/http"
@@ -17,7 +16,10 @@ func main() {
 
 	r := pat.New()
 	r.Get("/", IndexHandler)
+
+	http.Handle("/static/", http.FileServer(http.Dir(".")))
 	http.Handle("/", r)
-	log.Println("Listen on ", ":4000")
-	http.ListenAndServe(":4000", r)
+
+	log.Println("Listen on", ":4000")
+	log.Fatal(http.ListenAndServe(":4000", nil))
 }
